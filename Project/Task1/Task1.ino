@@ -22,7 +22,7 @@
 //#define DEBUG
 
 volatile int btnFlag = LOW;
-int counter = 0; // A counter for number of pprocesses
+int counter = 1; // A counter for number of processes
 int32_t temperature; //raw temp readings
 int32_t threshold = 23; // temperature threshold
 
@@ -82,6 +82,22 @@ void loop()
 			myNTC.lcdPrint(temperature, lcd, 'C');
 			myNTC.fahrenheitX10(temperature);
 			myNTC.lcdPrint(temperature, lcd, 'F');
+          
+          //SERVOSWIPE//
+      while(temperature > threshold)
+      {
+        for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
+        {                                  // in steps of 1 degree 
+          myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+          delay(15);                       // waits 15ms for the servo to reach the position 
+        } 
+        for(pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
+        {                                
+        myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+        delay(15);                       // waits 15ms for the servo to reach the position 
+        }
+      } //end of while loop
+       
 		#endif
 		break;
 	    case 3:
@@ -100,21 +116,6 @@ void loop()
 		break;
 	}
 	delay(1250);
-  
-    //SERVOSWIPE//
-  while(t > threshold)
-  {
-    for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
-    {                                  // in steps of 1 degree 
-      myservo.write(pos);              // tell servo to go to position in variable 'pos' 
-      delay(15);                       // waits 15ms for the servo to reach the position 
-    } 
-    for(pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
-    {                                
-      myservo.write(pos);              // tell servo to go to position in variable 'pos' 
-      delay(15);                       // waits 15ms for the servo to reach the position 
-    }
-  } //end of while loop 
 }
 
 void count()
