@@ -36,7 +36,7 @@ void Accelerometer::begin()
   _rDiv = 470000000;
 }
 
-void Accelerometer::get()
+void Accelerometer::read()
 {
   readAccX();
   readAccY();

@@ -29,7 +29,7 @@ int8_t temperature;       // actual temp
 int threshold = 23;       // temperature threshold
 
 LiquidCrystal_I2C myLcd(16, 2); //Create a LCD instance
-NTC_FR myNTC;           //Create a temp sens instance
+Temperature myNTC;           //Create a temp sens instance
 Accelerometer myACC;      //Create a acc instance
 Servo myServo;          //Create servo object to control a servo
 int pos = 0;          //variable to store the servo position
@@ -80,21 +80,23 @@ void loop()
         Serial.print('\t');
         Serial.println("Mode 2");
       #else
+      /*
         myNTC.get();
         myNTC.celsiusX10(temperature);
         myNTC.lcdPrint(temperature, myLcd, 'C');
         myNTC.fahrenheitX10(temperature);
         myNTC.lcdPrint(temperature, myLcd, 'F');
+      */
         while(temperature > threshold) //SERVOSWIPE//
         {
           for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
           {                                  // in steps of 1 degree 
-            myservo.write(pos);            // tell servo to go to position in variable 'pos' 
+            myServo.write(pos);            // tell servo to go to position in variable 'pos' 
             delay(15);                     // waits 15ms for the servo to reach the position 
           } 
           for(pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
           {                                
-            myservo.write(pos);            // tell servo to go to position in variable 'pos' 
+            myServo.write(pos);            // tell servo to go to position in variable 'pos' 
             delay(15);                     // waits 15ms for the servo to reach the position 
           }
         } //end of while loop
@@ -108,7 +110,7 @@ void loop()
         Serial.print('\t');
         Serial.println("Mode 3");
       #else
-        myACC.get();
+        myACC.read();
         myACC.lcdPrint(myLcd);
       #endif
     break;

@@ -26,12 +26,13 @@
 #define Accelerometer_h 
 
 #include "LiquidCrystal_I2C.h"
+
 class Accelerometer
 {
 public:
   Accelerometer();
   void begin();
-  void get();
+  void read();
   void lcdPrint(LiquidCrystal_I2C lcd);
 private:
   int8_t _Z, _Y, _X; 
