@@ -26,10 +26,12 @@ int counter = 1; // A counter for number of processes
 int32_t temperature; //raw temp readings
 int32_t threshold = 23; // temperature threshold
 
-LiquidCrystal_I2C lcd(16, 2); //Create a LCD instance
-NTC_FR myNTC; //Create a temp sens instance
+LiquidCrystal_I2C lcd(16, 2); 	//Create a LCD instance
+NTC_FR myNTC; 					//Create a temp sens instance
+accelerometer myACC;			//Create a acc instance
 Servo myservo; //Create servo object to control a servo
 int pos = 0; //variable to store the servo position
+
 
 void setup()
 {
@@ -41,8 +43,8 @@ void setup()
 	lcd.init(); 		//Initialize LCD
 	lcd.backlight();	//Turn ICD backlight on
 	myNTC.begin();		//Initialize Temp Sensor
-  myservo.attach(9) //attaches the servo on pin 9 to the servo object, CHECK
-
+	myACC.begin();		//Initialize acc
+	myservo.attach(9) //attaches the servo on pin 9 to the servo object, CHECK
 }
 
 void loop()
@@ -108,7 +110,8 @@ void loop()
 			Serial.print('\t');
 			Serial.println("Mode 3");
 		#else
-
+			myACC.get();
+			myACC.lcdPrint(lcd);
 		#endif
     	break;
 	    default:

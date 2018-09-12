@@ -25,12 +25,14 @@
 #ifndef accelerometer_h
 #define accelerometer_h 
 
+#include "LiquidCrystal_I2C.h"
 class accelerometer
 {
 public:
     accelerometer();
     void begin();
     void get();
+    void lcdPrint(LiquidCrystal_I2C lcd);
 private:
     int8_t _Z, _Y, _X; 
     int8_t _vRef;

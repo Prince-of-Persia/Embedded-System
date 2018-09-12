@@ -31,8 +31,8 @@
 // Include application, user and local libraries
 #include "LiquidCrystal_I2C.h"
 #include "FraunchPad_NTC.h"
-/*
 #include "accelerometer.h"
+/*
 #include "led.h"
 */
 
