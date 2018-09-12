@@ -87,6 +87,8 @@ void loop()
         myNTC.fahrenheitX10(temperature);
         myNTC.lcdPrint(temperature, myLcd, 'F');
       */
+        myNTC.read();
+        myNTC.tempToCel();
         while(temperature > threshold) //SERVOSWIPE//
         {
           for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
@@ -128,12 +130,11 @@ void loop()
         if (Serial.available() > 0)
         {
           pos = Serial.parseInt();
-          myservo.write(pos);
+          myServo.write(pos);
           Serial.println(pos);
           delay(1000);
         }
-      }
-      
+      } 
     #endif
       break;
     default:

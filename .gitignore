@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#New Lib Files
+Temp_NTC.h
+Temp_NTC.cpp

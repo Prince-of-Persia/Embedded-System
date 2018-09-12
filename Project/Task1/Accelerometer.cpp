@@ -16,11 +16,6 @@
 */
 #include "Accelerometer.h"
 
-#define ACC_Z A4
-#define ACC_Y A5
-#define ACC_X A6
-
-
 Accelerometer::Accelerometer()
 {
   pinMode(NTC_ENABLE, OUTPUT);
@@ -31,7 +26,7 @@ Accelerometer::Accelerometer()
 
 void Accelerometer::begin()
 {
-  digitalWrite(NTC_ENABLE, HIGH);
+  digitalWrite(ACC_ENABLE, HIGH);
   _vRef = 3000;
   _rDiv = 470000000;
 }
