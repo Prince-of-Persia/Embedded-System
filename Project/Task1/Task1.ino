@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-	along with this program. If not, see <http://www.gnu.org/licenses/>.
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "Task1.h"
@@ -24,108 +24,108 @@
 
 volatile int btnFlag = LOW;
 
-int counter = 1; 				// A counter for number of pprocesses
-int8_t temperature; 			// actual temp
-int threshold = 23; 			// temperature threshold
+int counter = 1;        // A counter for number of pprocesses
+int8_t temperature;       // actual temp
+int threshold = 23;       // temperature threshold
 
 LiquidCrystal_I2C myLcd(16, 2); //Create a LCD instance
-NTC_FR myNTC; 					//Create a temp sens instance
-accelerometer myACC;			//Create a acc instance
-Servo myServo; 					//Create servo object to control a servo
-int pos = 0; 					//variable to store the servo position
+NTC_FR myNTC;           //Create a temp sens instance
+Accelerometer myACC;      //Create a acc instance
+Servo myServo;          //Create servo object to control a servo
+int pos = 0;          //variable to store the servo position
 
 void setup()
 {
-	pinMode(PUSH2, INPUT_PULLUP); //set the push button 2 as input with the pull up resistor
-	attachInterrupt(PUSH2, count, FALLING); //Interrupt id fired whenever button is pressed	
-	Serial.begin(9600);
-	Serial.println("Initialized");
-	Wire.begin();
-	myLcd.init(); 		//Initialize LCD
-	myLcd.backlight();	//Turn ICD backlight on
-	myNTC.begin();		//Initialize Temp Sensor
-	myACC.begin();		//Initialize acc
-	myServo.attach(22);	//attaches the servo on pin 9 to the servo object, CHECK
+  pinMode(PUSH2, INPUT_PULLUP); //set the push button 2 as input with the pull up resistor
+  attachInterrupt(PUSH2, count, FALLING); //Interrupt id fired whenever button is pressed 
+  Serial.begin(9600);
+  Serial.println("Initialized");
+  Wire.begin();
+  myLcd.init();     //Initialize LCD
+  myLcd.backlight();  //Turn ICD backlight on
+  myNTC.begin();    //Initialize Temp Sensor
+  myACC.begin();    //Initialize acc
+  myServo.attach(22); //attaches the servo on pin 9 to the servo object, CHECK
 }
 
 void loop()
 {
-	myLcd.clear(); //Clear everyting on LCD
-	if (btnFlag)
-	{
-		if (counter == MAX_PROCESSES) counter = 1;
-		else counter++;
-		btnFlag = LOW;
-	}
-	switch (counter) 
-	{
-	    case 1:
-		// Name -> LCE
-		#ifdef DEBUG
-			Serial.print(counter);
-			Serial.print('\t');
-			Serial.println("Mode 1");
-		#else
-			myLcd.setCursor(0,0);
-			myLcd.print("Amir Nafisa");
-			myLcd.setCursor(0,1);
-			myLcd.print("Elvira");
-		#endif
-		break;
-	    case 2:
-		// Temp -> LCD
-		// Temp (trigger) -> servo
-		#ifdef DEBUG
-			Serial.print(counter);
-			Serial.print('\t');
-			Serial.println("Mode 2");
-		#else
-			myNTC.get();
-			myNTC.celsiusX10(temperature);
-			myNTC.lcdPrint(temperature, myLcd, 'C');
-			myNTC.fahrenheitX10(temperature);
-			myNTC.lcdPrint(temperature, myLcd, 'F');
-			while(temperature > threshold) //SERVOSWIPE//
-			{
-				for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
-				{                                  // in steps of 1 degree 
-					myservo.write(pos);            // tell servo to go to position in variable 'pos' 
-					delay(15);                     // waits 15ms for the servo to reach the position 
-				} 
-				for(pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
-				{                                
-					myservo.write(pos);            // tell servo to go to position in variable 'pos' 
-					delay(15);                     // waits 15ms for the servo to reach the position 
-				}
-			} //end of while loop
-		#endif
-		break;
-	    case 3:
-		// acce -> LCD
-		// acce -> LEDs
-		#ifdef DEBUG
-			Serial.print(counter);
-			Serial.print('\t');
-			Serial.println("Mode 3");
-		#else
-			myACC.get();
-			myACC.lcdPrint(myLcd);
-		#endif
-    	break;
-	    default:
-		// ERROR
-		break;
-	}
-	delay(1250);
+  myLcd.clear(); //Clear everyting on LCD
+  if (btnFlag)
+  {
+    if (counter == MAX_PROCESSES) counter = 1;
+    else counter++;
+    btnFlag = LOW;
+  }
+  switch (counter) 
+  {
+    case 1:
+      // Name -> LCE
+      #ifdef DEBUG
+        Serial.print(counter);
+        Serial.print('\t');
+        Serial.println("Mode 1");
+      #else
+        myLcd.setCursor(0,0);
+        myLcd.print("Amir Nafisa");
+        myLcd.setCursor(0,1);
+        myLcd.print("Elvira");
+      #endif
+    break;
+    case 2:
+      // Temp -> LCD
+      // Temp (trigger) -> servo
+      #ifdef DEBUG
+        Serial.print(counter);
+        Serial.print('\t');
+        Serial.println("Mode 2");
+      #else
+        myNTC.get();
+        myNTC.celsiusX10(temperature);
+        myNTC.lcdPrint(temperature, myLcd, 'C');
+        myNTC.fahrenheitX10(temperature);
+        myNTC.lcdPrint(temperature, myLcd, 'F');
+        while(temperature > threshold) //SERVOSWIPE//
+        {
+          for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
+          {                                  // in steps of 1 degree 
+            myservo.write(pos);            // tell servo to go to position in variable 'pos' 
+            delay(15);                     // waits 15ms for the servo to reach the position 
+          } 
+          for(pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
+          {                                
+            myservo.write(pos);            // tell servo to go to position in variable 'pos' 
+            delay(15);                     // waits 15ms for the servo to reach the position 
+          }
+        } //end of while loop
+      #endif
+    break;
+    case 3:
+      // acce -> LCD
+      // acce -> LEDs
+      #ifdef DEBUG
+        Serial.print(counter);
+        Serial.print('\t');
+        Serial.println("Mode 3");
+      #else
+        myACC.get();
+        myACC.lcdPrint(myLcd);
+      #endif
+    break;
+    default:
+    // ERROR
+    break;
+  }
+  delay(1250);
 }
 
 void count()
 {
-	static unsigned long last_int_time = 0;
-	unsigned long int_time = millis();
-	if (int_time - last_int_time > 200)
-	{
-		btnFlag = HIGH;
-	}
-	last_int_time = int_time;
+  static unsigned long last_int_time = 0;
+  unsigned long int_time = millis();
+  if (int_time - last_int_time > 200)
+  {
+    btnFlag = HIGH;
+  }
+  last_int_time = int_time;
 }

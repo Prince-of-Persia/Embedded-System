@@ -12,75 +12,75 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-	along with this program. If not, see <http://www.gnu.org/licenses/>.
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-#include "accelerometer.h"
+#include "Accelerometer.h"
 
 #define ACC_Z A4
 #define ACC_Y A5
 #define ACC_X A6
 
 
-accelerometer::accelerometer()
+Accelerometer::Accelerometer()
 {
-    pinMode(NTC_ENABLE, OUTPUT);
-    pinMode(ACC_Z, INPUT);
-    pinMode(ACC_Y, INPUT);
-    pinMode(ACC_X, INPUT);
+  pinMode(NTC_ENABLE, OUTPUT);
+  pinMode(ACC_Z, INPUT);
+  pinMode(ACC_Y, INPUT);
+  pinMode(ACC_X, INPUT);
 }
 
-void accelerometer::begin()
+void Accelerometer::begin()
 {
-    digitalWrite(NTC_ENABLE, HIGH);
-    _vRef = 3000;
-    _rDiv = 470000000;
+  digitalWrite(NTC_ENABLE, HIGH);
+  _vRef = 3000;
+  _rDiv = 470000000;
 }
 
-void accelerometer::get()
+void Accelerometer::get()
 {
-    readAccX();
-    readAccY();
-    readAccZ();
+  readAccX();
+  readAccY();
+  readAccZ();
 }
 
-void accelerometer::readAccZ()
+void Accelerometer::readAccZ()
 {
-    _Z = analogRead(ACC_Z);
-    //_Z = (_Z * _vRef) / 1024;
-    //_Z = (_Z * _rDiv) / (_vRef - _Z) / 1000;
-    Serial.print("Z: ");
-    Serial.print(_Z);
-    Serial.print('\t');
+  _Z = analogRead(ACC_Z);
+  //_Z = (_Z * _vRef) / 1024;
+  //_Z = (_Z * _rDiv) / (_vRef - _Z) / 1000;
+  Serial.print("Z: ");
+  Serial.print(_Z);
+  Serial.print('\t');
 }
 
-void accelerometer::readAccY()
+void Accelerometer::readAccY()
 {
-    _Y = analogRead(ACC_Y);
-    //_Y = (_Y * _vRef) / 1024;
-    //_Y = (_Y * _rDiv) / (_vRef - _Y) / 1000;
-    Serial.print("Y: ");
-    Serial.print(_Y);
-    Serial.print('\t');
+  _Y = analogRead(ACC_Y);
+  //_Y = (_Y * _vRef) / 1024;
+  //_Y = (_Y * _rDiv) / (_vRef - _Y) / 1000;
+  Serial.print("Y: ");
+  Serial.print(_Y);
+  Serial.print('\t');
 }
 
-void accelerometer::readAccX()
+void Accelerometer::readAccX()
 {
-    _X = analogRead(ACC_X);
-    //_X = (_X * _vRef) / 1024;
-    //_X = (_X * _rDiv) / (_vRef - _X) / 1000;
-    Serial.print("X: ");
-    Serial.print(_X);
-    Serial.print('\n');
+  _X = analogRead(ACC_X);
+  //_X = (_X * _vRef) / 1024;
+  //_X = (_X * _rDiv) / (_vRef - _X) / 1000;
+  Serial.print("X: ");
+  Serial.print(_X);
+  Serial.print('\n');
 }
 
-void accelerometer::lcdPrint(LiquidCrystal_I2C lcd)
+void Accelerometer::lcdPrint(LiquidCrystal_I2C lcd)
 {
-    lcd.setCursor(0,0);
-    lcd.print("X: ");
-    lcd.print(_X);
-    lcd.print(" Y: ");
-    lcd.print(_Y);
-    lcd.setCursor(0,1);
-    lcd.print("Z: ");
-    lcd.print(_Z);
+  lcd.setCursor(0,0);
+  lcd.print("X: ");
+  lcd.print(_X);
+  lcd.print(" Y: ");
+  lcd.print(_Y);
+  lcd.setCursor(0,1);
+  lcd.print("Z: ");
+  lcd.print(_Z);
 }

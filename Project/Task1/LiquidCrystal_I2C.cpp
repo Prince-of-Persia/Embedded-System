@@ -29,14 +29,14 @@ LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t lcd_cols,uint8_t lcd_rows)
 
 byte LiquidCrystal_I2C::scanI2C()
 {
-    byte error, address;
-    for(address = 1; address < 127; address++ )
-    {
-        Wire.beginTransmission(address);
-        Wire.write(1);
-        error = Wire.endTransmission();
-    }
-    return address;
+  byte error, address;
+  for(address = 1; address < 127; address++ )
+  {
+    Wire.beginTransmission(address);
+    Wire.write(1);
+    error = Wire.endTransmission();
+  }
+  return address;
 }
 
 void LiquidCrystal_I2C::init(){
@@ -67,47 +67,47 @@ void LiquidCrystal_I2C::begin(uint8_t cols, uint8_t lines, uint8_t dotsize)
   // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
   // according to datasheet, we need at least 40ms after power rises above 2.7V
   // before sending commands. LaunchPad can turn on way before so we'll wait 50
-    delay(50); 
+  delay(50); 
   
   // Now we pull both RS and R/W low to begin commands
-    expanderWrite(_backlightval);	// reset expanderand turn backlight off (Bit 8 =1)
-    delay(1000);
+  expanderWrite(_backlightval);	// reset expanderand turn backlight off (Bit 8 =1)
+  delay(1000);
 
   //put the LCD into 4 bit mode
   // this is according to the hitachi HD44780 datasheet
   // figure 24, pg 46
-	
+    
   // we start in 8bit mode, try to set 4 bit mode
   write4bits(0x03 << 4);
   delayMicroseconds(4500); // wait min 4.1ms
-   
+  
   // second try
   write4bits(0x03 << 4);
   delayMicroseconds(4500); // wait min 4.1ms
-   
+  
   // third go!
   write4bits(0x03 << 4); 
   delayMicroseconds(150);
-   
+  
   // finally, set to 4-bit interface
   write4bits(0x02 << 4); 
 
   // set # lines, font size, etc.
   command(LCD_FUNCTIONSET | _displayfunction);  
-	
+  
   // turn the display on with no cursor or blinking default
   _displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
   display();
-	
+  
   // clear it off
   clear();
-	
+  
   // Initialize to default text direction (for roman languages)
   _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
-	
+  
   // set the entry mode
   command(LCD_ENTRYMODESET | _displaymode);
-	
+  
   home();  
 }
 
@@ -136,36 +136,36 @@ void LiquidCrystal_I2C::setCursor(uint8_t col, uint8_t row)
 
 // Turn the display on/off (quickly)
 void LiquidCrystal_I2C::noDisplay() 
- {
-    _displaycontrol &= ~LCD_DISPLAYON;
-    command(LCD_DISPLAYCONTROL | _displaycontrol);
+{
+  _displaycontrol &= ~LCD_DISPLAYON;
+  command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 void LiquidCrystal_I2C::display()
 {
-    _displaycontrol |= LCD_DISPLAYON;
-    command(LCD_DISPLAYCONTROL | _displaycontrol);
+  _displaycontrol |= LCD_DISPLAYON;
+  command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
 // Turns the underline cursor on/off
 void LiquidCrystal_I2C::noCursor() {
-    _displaycontrol &= ~LCD_CURSORON;
-    command(LCD_DISPLAYCONTROL | _displaycontrol);
+  _displaycontrol &= ~LCD_CURSORON;
+  command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 void LiquidCrystal_I2C::cursor() {
-    _displaycontrol |= LCD_CURSORON;
-    command(LCD_DISPLAYCONTROL | _displaycontrol);
+  _displaycontrol |= LCD_CURSORON;
+  command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
 // Turn on and off the blinking cursor
 void LiquidCrystal_I2C::noBlink()
 {
-    _displaycontrol &= ~LCD_BLINKON;
-    command(LCD_DISPLAYCONTROL | _displaycontrol);
+  _displaycontrol &= ~LCD_BLINKON;
+  command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 void LiquidCrystal_I2C::blink()
 {
-    _displaycontrol |= LCD_BLINKON;
-    command(LCD_DISPLAYCONTROL | _displaycontrol);
+  _displaycontrol |= LCD_BLINKON;
+  command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
 // These commands scroll the display without changing the RAM
@@ -267,7 +267,7 @@ void LiquidCrystal_I2C::pulseEnable(uint8_t _data)
 {
   expanderWrite(_data | En);	// Enable high
   delayMicroseconds(1);		// enable pulse must be >450ns
-	
+  
   expanderWrite(_data & ~En);	// Enable low
   delayMicroseconds(50);	// commands need > 37us to settle
 } 
@@ -319,4 +319,4 @@ void LiquidCrystal_I2C::printstr(const char c[])
   print(c);
 }
 
-	
+
