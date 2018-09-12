@@ -26,11 +26,11 @@
 #endif
 //Other Core Libraries
 #include <Wire.h>
-//#include <Servo.h>
+
 
 // Include application, user and local libraries
 #include "LiquidCrystal_I2C.h"
-#include "FraunchPad_NTC.h"
+#include "Temp_NTC.h"
 #include "accelerometer.h"
 /*
 #include "led.h"

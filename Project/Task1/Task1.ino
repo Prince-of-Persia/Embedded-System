@@ -16,22 +16,22 @@
 */
 
 #include "Task1.h"
+#include <Servo.h>
 
 #define MAX_PROCESSES 3 //Maximum number of processes
 
 //#define DEBUG
 
 volatile int btnFlag = LOW;
-int counter = 0; // A counter for number of pprocesses
-int32_t temperature; //raw temp readings
-int32_t threshold = 23; // temperature threshold
+int counter = 0; 				// A counter for number of pprocesses
+int8_t temperature; 			// actual temp
+int threshold = 23; 			// temperature threshold
 
-LiquidCrystal_I2C lcd(16, 2); 	//Create a LCD instance
+LiquidCrystal_I2C myLcd(16, 2); //Create a LCD instance
 NTC_FR myNTC; 					//Create a temp sens instance
 accelerometer myACC;			//Create a acc instance
-Servo myservo; //Create servo object to control a servo
-int pos = 0; //variable to store the servo position
-
+Servo myServo; 					//Create servo object to control a servo
+int pos = 0; 					//variable to store the servo position
 
 void setup()
 {
@@ -40,16 +40,16 @@ void setup()
 	Serial.begin(9600);
 	Serial.println("Initialized");
 	Wire.begin();
-	lcd.init(); 		//Initialize LCD
-	lcd.backlight();	//Turn ICD backlight on
+	myLcd.init(); 		//Initialize LCD
+	myLcd.backlight();	//Turn ICD backlight on
 	myNTC.begin();		//Initialize Temp Sensor
 	myACC.begin();		//Initialize acc
-	myservo.attach(9) //attaches the servo on pin 9 to the servo object, CHECK
+	myServo.attach(22);	//attaches the servo on pin 9 to the servo object, CHECK
 }
 
 void loop()
 {
-	lcd.clear(); //Clear everyting on LCD
+	myLcd.clear(); //Clear everyting on LCD
 	if (btnFlag)
 	{
 		if (counter == MAX_PROCESSES) counter = 1;
@@ -65,10 +65,10 @@ void loop()
 			Serial.print('\t');
 			Serial.println("Mode 1");
 		#else
-			lcd.setCursor(0,0);
-			lcd.print("Amir Nafisa");
-			lcd.setCursor(0,1);
-			lcd.print("Elvira");
+			myLcd.setCursor(0,0);
+			myLcd.print("Amir Nafisa");
+			myLcd.setCursor(0,1);
+			myLcd.print("Elvira");
 		#endif
 		break;
 	    case 2:
@@ -81,9 +81,9 @@ void loop()
 		#else
 			myNTC.get();
 			myNTC.celsiusX10(temperature);
-			myNTC.lcdPrint(temperature, lcd, 'C');
+			myNTC.lcdPrint(temperature, myLcd, 'C');
 			myNTC.fahrenheitX10(temperature);
-			myNTC.lcdPrint(temperature, lcd, 'F');
+			myNTC.lcdPrint(temperature, myLcd, 'F');
 		#endif
 		break;
 	    case 3:
@@ -95,7 +95,7 @@ void loop()
 			Serial.println("Mode 3");
 		#else
 			myACC.get();
-			myACC.lcdPrint(lcd);
+			myACC.lcdPrint(myLcd);
 		#endif
     	break;
 	    default:
@@ -105,16 +105,16 @@ void loop()
 	delay(1250);
   
     //SERVOSWIPE//
-  while(t > threshold)
+  while(23 > threshold)
   {
     for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
     {                                  // in steps of 1 degree 
-      myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+      myServo.write(pos);              // tell servo to go to position in variable 'pos' 
       delay(15);                       // waits 15ms for the servo to reach the position 
     } 
     for(pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
     {                                
-      myservo.write(pos);              // tell servo to go to position in variable 'pos' 
+      myServo.write(pos);              // tell servo to go to position in variable 'pos' 
       delay(15);                       // waits 15ms for the servo to reach the position 
     }
   } //end of while loop 
