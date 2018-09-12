@@ -114,6 +114,28 @@ void loop()
         myACC.lcdPrint(myLcd);
       #endif
     break;
+    case 4:
+    //servo reads input from serial monitor to determine pos   
+    #ifdef DEBUG
+      Serial.print(counter);
+      Serial.print('\t');
+      Serial.println("Mode 4");
+    #else
+      //actual servo stuff
+      pos = Serial.read();
+      while(pos >= 0 && pos <= 180)
+      {
+        if (Serial.available() > 0)
+        {
+          pos = Serial.parseInt();
+          myservo.write(pos);
+          Serial.println(pos);
+          delay(1000);
+        }
+      }
+      
+    #endif
+      break;
     default:
     // ERROR
     break;
