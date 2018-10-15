@@ -68,7 +68,14 @@ void loop()
 			myLcd.setCursor(0,1);
 			myLcd.print(temperature);
 			while(temperature > tempThreshold)
+      
 			{
+        if(btnFlag)
+        {
+          counter++
+          btnFlag=LOW
+          break
+         }
 				for (int pos = 0; pos < 180; ++pos)
 				{
 					myServo.write(pos);
