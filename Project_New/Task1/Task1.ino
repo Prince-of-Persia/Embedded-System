@@ -8,23 +8,50 @@
 // Include application, user and local libraries
 #include <Wire.h>
 #include <Servo.h>
-#include "FraunchPad_NTC.h"
 #include "Accelerometer.h"
 #include "LiquidCrystal_I2C.h"
 
 #define MAX_PROCESSES 4 				// Maximum number of processes
+#define tempPin A1
 
 volatile int btnFlag = LOW;
 
 //Object instance
 LiquidCrystal_I2C myLcd(16,2);	// LCD Display
-NTC_FR myNTC;										// Temp sensor
 Accelerometer myAcc;						// Accelerometer sensor 
 Servo myServo;									// Servo Thingy 
 
 int counter = 1;								// A counter for number of processes
-uint32_t temperature;						// Actual Temperature
-uint32_t tempThreshold = 200;			// Temprature Threshold
+int tempRead;										// Actual Temperature
+float tempThreshold = 20.0;			// Temprature Threshold
+float tempC;
+float tempF;
+int vRef = 3000;
+int rDiv = 470000000;
+
+int tempTable[15][2] = {
+ // {-25, 1344300},
+ // {-20,  998530},
+ // {-15,  748670},
+ // {-10,  566360},
+ // { -5,  432120},
+ // {  0,  332400},
+  {  5,  257690},
+  { 10,  201270},
+  { 15,  158340},
+  { 20,  125420},
+  { 25,  100000},
+  { 30,   80239},
+  { 35,   64776},
+  { 40,   52598},
+  { 45,   42950},
+  { 50,   35262},
+  { 55,   29100},
+  { 60,   24136},
+  { 65,   20114},
+  { 70,   16841},
+  { 75,   14164}
+};
 
 void setup()
 {
@@ -35,10 +62,12 @@ void setup()
 	Wire.begin();
 	myLcd.init();
 	myLcd.backlight();
-	myNTC.begin();
 	myAcc.begin();
 	myServo.attach(22);
 	Serial.begin(9600);
+
+	pinMode(NTC_ENABLE, OUTPUT);
+  pinMode(tempPin, INPUT);
 }
 
 void loop()
@@ -60,15 +89,29 @@ void loop()
 		break;
 		case 2:
 			//myLcd.print("Case 2");
-			myNTC.get();
-			myNTC.celsiusX10(temperature);
+			tempRead = analogRead(tempPin);
+			tempRead = (tempRead * vRef) / 1024;
+			tempRead = (tempRead * rDiv) / (vRef - tempRead) / 1000;
+
+			for (int i=1; i<15; i++) 
+			{
+				if (tempTable[i][1] < tempRead)
+				{
+					tempC = map(tempRead, tempTable[i-1][1], tempTable[i][1], 100*tempTable[i-1][0], 100*tempTable[i][0]);
+					tempC /= 100;
+					break;
+				}
+			}
+			//tempC = (tempRead - 0.5) * 100.0;
+			tempF = tempC * 9.0 / 5.0 + 32.0;
 			myLcd.setCursor(0,0);
-			myLcd.print(temperature);
-			temperature=(temperature*(9/5)+32);
+			myLcd.print("tempC ");
+			myLcd.print(tempC);
 			myLcd.setCursor(0,1);
-			myLcd.print(temperature);
-			while(temperature > tempThreshold)
-      
+			myLcd.print("tempF ");
+			myLcd.print(tempF);
+
+			while(tempC > tempThreshold)
 			{
         if(btnFlag)
         {
