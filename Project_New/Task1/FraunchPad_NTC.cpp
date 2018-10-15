@@ -73,7 +73,7 @@ void NTC_FR::get() {
 }
 
 
-void NTC_FR::celsiusX10(int32_t &t) {
+void NTC_FR::celsiusX10(uint32_t &t) {
   t = 9999;
   
   //

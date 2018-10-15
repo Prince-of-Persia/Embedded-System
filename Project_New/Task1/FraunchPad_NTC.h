@@ -66,7 +66,7 @@ public:
   /// @endcode
   /// @param	t temperature in degrees celsius
   ///
-  void celsiusX10(int32_t &t);
+  void celsiusX10(uint32_t &t);
 
   ///
   /// @brief	Return temperature in degrees fahrenheit, X10 to avoid float
