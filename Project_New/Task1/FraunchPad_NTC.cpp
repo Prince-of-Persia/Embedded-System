@@ -66,12 +66,6 @@ void NTC_FR::begin() {
   _rDiv = 470000000; // 
 }
 
-
-String NTC_FR::WhoAmI() {
-  return "FraunchPad NTC thermometer";
-}
-
-
 void NTC_FR::get() {
   _t = analogRead(A1);
   _t = (_t * _vRef) / 1024;

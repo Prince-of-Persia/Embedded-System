@@ -52,12 +52,6 @@ public:
   void begin();
   
   ///
-  /// @brief 	Who am I?
-  /// @return 	Who am I? string
-  ///
-  String WhoAmI();
-  
-  ///
   /// @brief 	Acquire temperature
   /// @note	Call this function prior to degreeX10 or fahrenheitX10
   ///
