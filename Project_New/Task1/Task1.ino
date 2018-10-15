@@ -8,6 +8,7 @@
 // Include application, user and local libraries
 #include <Wire.h>
 #include "FraunchPad_NTC.h"
+#include "Accelerometer.h"
 #include "LiquidCrystal_I2C.h"
 
 #define MAX_PROCESSES 4 				//Maximum number of processes
@@ -17,6 +18,7 @@ volatile int btnFlag = LOW;
 //Object instance
 LiquidCrystal_I2C myLcd(16,2);	//LCD Display
 NTC_FR myNTC;										//Temp sensor
+Accelerometer myAcc;						//Accelerometer sensor 
 
 int counter = 1;								//A counter for number of processes
 int32_t temperature;						//Actual Temperature
@@ -32,6 +34,7 @@ void setup()
 	myLcd.init();
 	myLcd.backlight();
 	myNTC.begin();
+	myAcc.begin();
 	Serial.begin(9600);
 }
 
@@ -64,16 +67,16 @@ void loop()
 		break;
 		case 3:
 			myLcd.setCursor(0,0);
-			myLcd.print("Case 3");
-
+			//myLcd.print("Case 3");
+			myAcc.read();
+			myAcc.lcdPrint(myLcd);
 		break;
 		case 4:
 			myLcd.print("Case 4");
 			myLcd.setCursor(0,0);
-
 		break;
 	}
-	delay(200);
+	delay(500);
 }
 
 void count()
