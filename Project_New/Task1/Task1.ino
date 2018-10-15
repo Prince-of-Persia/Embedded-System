@@ -72,9 +72,9 @@ void loop()
 			{
         if(btnFlag)
         {
-          counter++
-          btnFlag=LOW
-          break
+          counter++;
+          btnFlag=LOW;
+          break;
          }
 				for (int pos = 0; pos < 180; ++pos)
 				{
@@ -99,7 +99,7 @@ void loop()
 			myLcd.setCursor(0,0);
 		break;
 	}
-	delay(50);
+	delay(150);
 }
 
 void count()
