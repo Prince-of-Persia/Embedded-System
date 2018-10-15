@@ -24,7 +24,7 @@ Servo myServo;									// Servo Thingy
 
 int counter = 1;								// A counter for number of processes
 uint32_t temperature;						// Actual Temperature
-uint32_t tempThreshold = 24;			// Temprature Threshold
+uint32_t tempThreshold = 200;			// Temprature Threshold
 
 void setup()
 {
@@ -67,14 +67,14 @@ void loop()
 			temperature=(temperature*(9/5)+32);
 			myLcd.setCursor(0,1);
 			myLcd.print(temperature);
-			while(temperature/10 > tempThreshold)
+			while(temperature > tempThreshold)
 			{
 				for (int pos = 0; pos < 180; ++pos)
 				{
 					myServo.write(pos);
 					delay(15);
 				}
-				for (int pos = 180; pos >= 1; ++pos)
+				for (int pos = 180; pos >= 1; --pos)
 				{
 					myServo.write(pos);
 					delay(15);
@@ -92,7 +92,7 @@ void loop()
 			myLcd.setCursor(0,0);
 		break;
 	}
-	delay(500);
+	delay(50);
 }
 
 void count()
