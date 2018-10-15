@@ -89,20 +89,4 @@ void NTC_FR::celsiusX10(uint32_t &t) {
   }
 }
 
-void NTC_FR::fahrenheitX10(int32_t &t) {
-  t = 9999;
-  
-  //
-  // Based on table algorithm by larsie — Tue Apr 03, 2012 1:18 pm
-  // http://www.43oh.com/forum/viewtopic.php?f=10&p=18608#p18608
-  //
-  for (uint8_t i=1; i<15; i++) {
-    if (table[i][1] < _t) {
-      t = map(_t, table[i-1][1], table[i][1], 100*table[i-1][0], 100*table[i][0]);
-      t = (t*9 + 1600) / 50;
-      break;
-    }
-  }
-}
-
 

@@ -64,6 +64,9 @@ void loop()
 			myNTC.celsiusX10(temperature);
 			myLcd.setCursor(0,0);
 			myLcd.print(temperature);
+			temperature=(temperature*(9/5)+32);
+			myLcd.setCursor(0,1);
+			myLcd.print(temperature);
 			while(temperature/10 > tempThreshold)
 			{
 				for (int pos = 0; pos < 180; ++pos)
