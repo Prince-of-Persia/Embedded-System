@@ -15,12 +15,32 @@
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-void setup()
-{
-	
-}
+// Core library - MCU-based
+#if defined(__MSP430FR5739__) // FraunchPad specific
+#include "Energia.h"
+#else // error
+#error Platform not defined
+#endif
 
-void loop()
+#ifndef Accelerometer_h
+#define Accelerometer_h 
+
+#include "LiquidCrystal_I2C.h"
+
+class Accelerometer
 {
-	
-}
+public:
+  Accelerometer();
+  void begin();
+  void read();
+  void lcdPrint(LiquidCrystal_I2C lcd);
+private:
+  int8_t _Z, _Y, _X; 
+  int8_t _vRef;
+  int8_t _rDiv;
+  void readAccZ();
+  void readAccY();
+  void readAccX();
+};
+
+#endif

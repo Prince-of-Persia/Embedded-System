@@ -1,6 +1,6 @@
-#include <Wire.h>
+//#include <Wire.h>
 #include <SPI.h>
-#include "LiquidCrystal_I2C.h"
+//#include "LiquidCrystal_I2C.h"
 
 char buf [100];
 volatile byte pos;
@@ -8,12 +8,12 @@ volatile bool process_it;
 
 //Set the LCD address to 0x27 for a 16 chars and 2 line display
 //Should we maybe include our address function here instead Amir?
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+//LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
   // put your setup code here, to run once:
-  lcd.begin();
-  lcd.backlight();
+  //lcd.begin();
+  //lcd.backlight();
   
   Serial.begin(9600);
   //Turn on SPI in slave mode
@@ -45,16 +45,16 @@ ISR (SPI_STC_vect)
 
 void loop() {
   // put your main code here, to run repeatedly:
-  lcd.setCursor(0,0);
-  lcd.print("We be testin");
+  //lcd.setCursor(0,0);
+  //lcd.print("We be testin");
   delay(2000);
   if (process_it)
   {
     buf[pos] = 0;
     Serial.println(buf);
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print(buf);
+    //lcd.clear();
+    //lcd.setCursor(0,0);
+    //lcd.print(buf);
     pos = 0;
     process_it = false;
   } // end of flag set

@@ -34,7 +34,10 @@ void setup()
   SPI.begin();
   //Slow down Master a bit
   SPI.setClockDivider(SPI_CLOCK_DIV8);
+  Serial.begin(9600);
 }
+
+
 
 void loop()
 {
@@ -45,18 +48,20 @@ void loop()
   if(toggle)
   {
     //send test string
-    for (const char * p = "FirstName\n" ; c = *p; p++)
+    for (const char * p = "Amir,Nafisa,Elvira\n" ; c = *p; p++)
     {
       SPI.transfer (c);
+      Serial.print(c);
       toggle = 0;
     }
   }
   else
   {
     //send test string
-    for (const char * p = "SecondName\n" ; c = *p; p++)
+    for (const char * p = "Amir,Nafisa,Elvira\n" ; c = *p; p++)
     {
       SPI.transfer (c);
+      Serial.print(c);
       toggle = 1;    
     }
   }

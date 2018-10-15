@@ -14,25 +14,30 @@
     You should have received a copy of the GNU General Public License
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
+#include "Temp_NTC.h"
 
-#ifndef Task1_h
-#define Task1_h
+Temperature myNTC;
+float temp = 0.0;
 
-// Core library - MCU-based
-#if defined(__MSP430FR5739__) // FraunchPad only
-#include "Energia.h"
-#else // error
-#error Platform not supported. FraunchPad only.
-#endif
-//Other Core Libraries
-#include <Wire.h>
+void setup()
+{
+	myNTC.begin();
+	Serial.begin(9600);
+}
 
+void loop()
+{
+	myNTC.read();
+	temp = myNTC.tempK();
+	Serial.print("Temp K = ");
+	Serial.print(temp);
 
-// Include application, user and local libraries
-#include "LiquidCrystal_I2C.h"
-//#include "Temp_NTC.h"
-#include "FraunchPad_NTC.h"
-#include "Accelerometer.h"
-//#include "Led.h"
-
-#endif
+	temp = myNTC.tempC();
+	Serial.print("\tTemp C = ");
+	Serial.print(temp);
+	
+	temp = myNTC.tempF();
+	Serial.print("\tTemp F = ");
+	Serial.print(temp);
+	Serial.print("\n");	
+}

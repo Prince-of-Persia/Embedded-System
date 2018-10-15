@@ -16,7 +16,7 @@
 */
 
 #include "Task1.h"
-#include <Servo.h>
+//#include <Servo.h>
 
 #define MAX_PROCESSES 3 //Maximum number of processes
 
@@ -25,13 +25,14 @@
 volatile int btnFlag = LOW;
 
 int counter = 1;        // A counter for number of pprocesses
-int8_t temperature;       // actual temp
-int threshold = 23;       // temperature threshold
+int32_t temperature;       // actual temp
+int threshold = 49;       // temperature threshold
 
 LiquidCrystal_I2C myLcd(16, 2); //Create a LCD instance
-Temperature myNTC;           //Create a temp sens instance
-Accelerometer myACC;      //Create a acc instance
-Servo myServo;          //Create servo object to control a servo
+NTC_FR myNTC;
+//Temperature myNTC;           //Create a temp sens instance
+//Accelerometer myACC;      //Create a acc instance
+//Servo myServo;          //Create servo object to control a servo
 int pos = 0;          //variable to store the servo position
 
 void setup()
@@ -44,8 +45,8 @@ void setup()
   myLcd.init();     //Initialize LCD
   myLcd.backlight();  //Turn ICD backlight on
   myNTC.begin();    //Initialize Temp Sensor
-  myACC.begin();    //Initialize acc
-  myServo.attach(22); //attaches the servo on pin 9 to the servo object, CHECK
+  //myACC.begin();    //Initialize acc
+  //myServo.attach(22); //attaches the servo on pin 9 to the servo object, CHECK
 }
 
 void loop()
@@ -80,15 +81,19 @@ void loop()
         Serial.print('\t');
         Serial.println("Mode 2");
       #else
-      /*
+        /*
+          myNTC.get();
+          myNTC.celsiusX10(temperature);
+          myNTC.lcdPrint(temperature, myLcd, 'C');
+          myNTC.fahrenheitX10(temperature);
+          myNTC.lcdPrint(temperature, myLcd, 'F');
+        */
         myNTC.get();
         myNTC.celsiusX10(temperature);
         myNTC.lcdPrint(temperature, myLcd, 'C');
         myNTC.fahrenheitX10(temperature);
         myNTC.lcdPrint(temperature, myLcd, 'F');
-      */
-        myNTC.read();
-        myNTC.tempToCel();
+        /*
         while(temperature > threshold) //SERVOSWIPE//
         {
           for(pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
@@ -102,8 +107,10 @@ void loop()
             delay(15);                     // waits 15ms for the servo to reach the position 
           }
         } //end of while loop
+        */
       #endif
     break;
+    /*
     case 3:
       // acce -> LCD
       // acce -> LEDs
@@ -111,10 +118,9 @@ void loop()
         Serial.print(counter);
         Serial.print('\t');
         Serial.println("Mode 3");
-      #else
-        myACC.read();
-        myACC.lcdPrint(myLcd);
       #endif
+      myACC.read();
+      myACC.lcdPrint(myLcd);
     break;
     case 4:
     //servo reads input from serial monitor to determine pos   
@@ -122,26 +128,26 @@ void loop()
       Serial.print(counter);
       Serial.print('\t');
       Serial.println("Mode 4");
-    #else
-      //actual servo stuff
-      pos = Serial.read();
-      while(pos >= 0 && pos <= 180)
-      {
-        if (Serial.available() > 0)
-        {
-          pos = Serial.parseInt();
-          myServo.write(pos);
-          Serial.println(pos);
-          delay(1000);
-        }
-      } 
     #endif
-      break;
+    //actual servo stuff
+    pos = Serial.read();
+    while(pos >= 0 && pos <= 180)
+    {
+      if (Serial.available() > 0)
+      {
+        pos = Serial.parseInt();
+        myServo.write(pos);
+        Serial.println(pos);
+        delay(1000);
+      }
+    } 
+    break;
+    */
     default:
     // ERROR
     break;
   }
-  delay(1250);
+  delay(50);
 }
 
 void count()
