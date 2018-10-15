@@ -91,7 +91,7 @@ void loop()
         myNTC.get();
         myNTC.celsiusX10(temperature);
         myNTC.lcdPrint(temperature, myLcd, 'C');
-        myNTC.fahrenheitX10(temperature);
+        temperature=(temperature*(9/5) + 32);
         myNTC.lcdPrint(temperature, myLcd, 'F');
         /*
         while(temperature > threshold) //SERVOSWIPE//

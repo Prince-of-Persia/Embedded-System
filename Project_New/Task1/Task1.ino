@@ -58,7 +58,7 @@ void loop()
 			myNTC.celsiusX10(temperature);
 			myLcd.setCursor(0,0);
 			myLcd.print(temperature);
-			myNTC.fahrenheitX10(temperature);
+			temperature=(temperature*(9/5)+32);
 			myLcd.setCursor(0,1);
 			myLcd.print(temperature);
 		break;
