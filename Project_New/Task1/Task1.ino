@@ -181,6 +181,14 @@ void loop()
 			Serial.println("Case 4");
 			myLcd.print("Case 4");
 			myLcd.setCursor(0,0);
+     if (Serial.available() > 0)
+     {
+      pos = Serial.parseInt();
+      myServo.write(pos);
+      Serial.println(pos);
+      delay(1000);
+      }
+     
 		break;
 	}
 	delay(150);
