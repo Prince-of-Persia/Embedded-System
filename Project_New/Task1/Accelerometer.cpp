@@ -43,9 +43,9 @@ void Accelerometer::readAccZ()
   _Z = analogRead(ACC_Z);
   //_Z = (_Z * _vRef) / 1024;
   //_Z = (_Z * _rDiv) / (_vRef - _Z) / 1000;
-  Serial.print("Z: ");
-  Serial.print(_Z);
-  Serial.print('\t');
+  //Serial.print("Z: ");
+  //Serial.print(_Z);
+  //Serial.print('\n');
 }
 
 void Accelerometer::readAccY()
@@ -53,9 +53,9 @@ void Accelerometer::readAccY()
   _Y = analogRead(ACC_Y);
   //_Y = (_Y * _vRef) / 1024;
   //_Y = (_Y * _rDiv) / (_vRef - _Y) / 1000;
-  Serial.print("Y: ");
-  Serial.print(_Y);
-  Serial.print('\t');
+  //Serial.print("Y: ");
+  //Serial.print(_Y);
+  //Serial.print('\t');
 }
 
 void Accelerometer::readAccX()
@@ -63,9 +63,9 @@ void Accelerometer::readAccX()
   _X = analogRead(ACC_X);
   //_X = (_X * _vRef) / 1024;
   //_X = (_X * _rDiv) / (_vRef - _X) / 1000;
-  Serial.print("X: ");
-  Serial.print(_X);
-  Serial.print('\n');
+  //Serial.print("X: ");
+  //Serial.print(_X);
+  //Serial.print('\t');
 }
 
 void Accelerometer::lcdPrint(LiquidCrystal_I2C lcd)
@@ -78,4 +78,9 @@ void Accelerometer::lcdPrint(LiquidCrystal_I2C lcd)
   lcd.setCursor(0,1);
   lcd.print("Z: ");
   lcd.print(_Z);
+}
+
+int8_t Accelerometer::getY()
+{
+  return _Y;
 }

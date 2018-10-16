@@ -22,9 +22,12 @@ NTC_FR myNTC;										// Temp sensor
 Accelerometer myAcc;						// Accelerometer sensor 
 Servo myServo;									// Servo Thingy 
 
-int counter = 1;								// A counter for number of processes
+int counter = 3;								// A counter for number of processes
 uint32_t temperature;						// Actual Temperature
 uint32_t tempThreshold = 200;			// Temprature Threshold
+
+uint8_t LED[] = {LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8};
+uint8_t accY = 0;
 
 void setup()
 {
@@ -39,6 +42,12 @@ void setup()
 	myAcc.begin();
 	myServo.attach(22);
 	Serial.begin(9600);
+	for (int i = 0; i < sizeof(LED); ++i)
+	{
+		pinMode(LED[i], OUTPUT);
+		digitalWrite(LED[i], LOW);
+	}
+
 }
 
 void loop()
@@ -53,6 +62,7 @@ void loop()
 	switch(counter)
 	{
 		case 1:
+			Serial.println("Case 1");
 			myLcd.setCursor(0,0);
 			myLcd.print("Amir Nafisa");
 			myLcd.setCursor(0,1);
@@ -60,6 +70,7 @@ void loop()
 		break;
 		case 2:
 			//myLcd.print("Case 2");
+			Serial.println("Case 2");
 			myNTC.get();
 			myNTC.celsiusX10(temperature);
 			myLcd.setCursor(0,0);
@@ -89,12 +100,85 @@ void loop()
 			}
 		break;
 		case 3:
+			//Serial.println("Case 3");
 			myLcd.setCursor(0,0);
 			//myLcd.print("Case 3");
 			myAcc.read();
 			myAcc.lcdPrint(myLcd);
+			/*
+			for (int i = 0; i < sizeof(LED)+2; ++i)
+			{
+				digitalWrite(LED[i], HIGH);
+				delay(50);
+				digitalWrite(LED[i-2], LOW);
+				delay(50);
+			}
+			*/
+			accY = myAcc.getY();
+			accY = map(accY, -300, 300, -4, 4);
+			Serial.print("accY: ");
+			Serial.println(accY);
+			if (accY >= 2)
+			{
+				digitalWrite(LED[3], HIGH);
+				delay(50);
+				digitalWrite(LED[4], HIGH);
+				delay(50);
+				digitalWrite(LED[5], HIGH);
+				delay(50);
+				digitalWrite(LED[6], HIGH);
+				delay(50);
+				digitalWrite(LED[7], HIGH);
+				delay(50);
+				digitalWrite(LED[4], LOW);
+				delay(50);
+				digitalWrite(LED[3], LOW);
+				delay(50);
+				digitalWrite(LED[2], LOW);
+				delay(50);
+				digitalWrite(LED[1], LOW);
+				delay(50);
+				digitalWrite(LED[0], LOW);
+			}if (accY < 2)
+			{
+				digitalWrite(LED[3], HIGH);
+				delay(50);
+				digitalWrite(LED[4], HIGH);
+				delay(50);
+				digitalWrite(LED[5], HIGH);
+				delay(50);
+				digitalWrite(LED[6], HIGH);
+				delay(50);
+				digitalWrite(LED[7], HIGH);
+				delay(50);
+				digitalWrite(LED[4], LOW);
+				delay(50);
+				digitalWrite(LED[3], LOW);
+				delay(50);
+				digitalWrite(LED[2], LOW);
+				delay(50);
+				digitalWrite(LED[1], LOW);
+				delay(50);
+				digitalWrite(LED[0], LOW);
+			}
+			/*
+			for (int i = accY; i < sizeof(LED); ++i)
+			{
+				if (i <= 4)
+				{
+					digitalWrite(LED[i+4], HIGH);
+					digitalWrite(LED[i], LOW);
+				}
+				if (i >= 4)
+				{
+					digitalWrite(LED[i+4], LOW);
+					digitalWrite(LED[i], HIGH);
+				}
+			}
+			*/
 		break;
 		case 4:
+			Serial.println("Case 4");
 			myLcd.print("Case 4");
 			myLcd.setCursor(0,0);
 		break;

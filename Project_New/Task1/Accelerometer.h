@@ -34,6 +34,7 @@ public:
   void begin();
   void read();
   void lcdPrint(LiquidCrystal_I2C lcd);
+  int8_t getY();
 private:
   int8_t _Z, _Y, _X; 
   int8_t _vRef;
