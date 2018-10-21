@@ -80,7 +80,9 @@ void Accelerometer::lcdPrint(LiquidCrystal_I2C lcd)
   lcd.print(_Z);
 }
 
+
 int8_t Accelerometer::getY()
 {
   return _Y;
 }
+
