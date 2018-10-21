@@ -88,7 +88,7 @@ void loop()
           break;
 				}
 				servoSweep();
-		}	
+			}	
 		break;
 		case 3:
 			//Serial.println("Case 3");
