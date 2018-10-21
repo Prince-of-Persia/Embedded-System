@@ -11,12 +11,12 @@
 /// @date	Oct 08, 2012
 /// @version	101
 /// 
-/// @copyright	© Rei Vilo, 2012
+/// @copyright	Â© Rei Vilo, 2012
 /// @copyright	CC = BY NC SA
 ///
 /// @see
 ///
-/// *		Table algorithm by larsie — Tue Apr 03, 2012 1:18 pm
+/// *		Table algorithm by larsie â€” Tue Apr 03, 2012 1:18 pm
 /// @n		http://www.43oh.com/forum/viewtopic.php?f=10&p=18608#p18608
 ///
 /// *		NTC table generated with TDK / Epcos NTC R/T Calculation 5.0
@@ -66,7 +66,7 @@ public:
   /// @endcode
   /// @param	t temperature in degrees celsius
   ///
-  void celsiusX10(uint32_t &t);
+  void celsiusX10(uint16_t &t);
 
   ///
   /// @brief	Return temperature in degrees fahrenheit, X10 to avoid float
@@ -77,13 +77,14 @@ public:
   /// @endcode
   /// @param	t temperature in degrees celsius
   ///
-  void fahrenheitX10(int32_t &t);
+  void fahrenheitX10(uint8_t &t);
 
 private:
-  int64_t _t;
-  int32_t _vRef;
-  int32_t _rDiv;
+  uint32_t _t;
+  uint16_t _vRef;
+  uint16_t _rDiv;
 };
 
 
 #endif
+
