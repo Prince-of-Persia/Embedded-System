@@ -11,7 +11,7 @@
 // http://embedxcode.weebly.com
 //
 //
-// Copyright © Rei Vilo, 2012
+// Copyright Â© Rei Vilo, 2012
 // Licence CC = BY NC SA
 //
 // See FraunchPad_NTC.h and ReadMe.txt for references
@@ -26,7 +26,7 @@
 // Select B57560G1104 for NTC 100 k = 25 oC
 // with temperature scaling = 5 oC, lower limit = -25 oC and upper limit = + 75 oC
 //
-int32_t table[15][2] = {
+uint32_t table[15][2] = {
  // {-25, 1344300},
  // {-20,  998530},
  // {-15,  748670},
@@ -73,11 +73,11 @@ void NTC_FR::get() {
 }
 
 
-void NTC_FR::celsiusX10(uint32_t &t) {
+void NTC_FR::celsiusX10(uint16_t &t) {
   t = 9999;
   
   //
-  // Based on table algorithm by larsie — Tue Apr 03, 2012 1:18 pm
+  // Based on table algorithm by larsie â€” Tue Apr 03, 2012 1:18 pm
   // http://www.43oh.com/forum/viewtopic.php?f=10&p=18608#p18608
   //
   for (uint8_t i=1; i<15; i++) {
@@ -88,5 +88,6 @@ void NTC_FR::celsiusX10(uint32_t &t) {
     }
   }
 }
+
 
 

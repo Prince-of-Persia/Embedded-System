@@ -117,3 +117,4 @@ void count()
 	if(intTime - lastIntTime > 200) btnFlag = HIGH;
 	lastIntTime = intTime;
 }
+

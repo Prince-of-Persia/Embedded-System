@@ -79,3 +79,4 @@ void Accelerometer::lcdPrint(LiquidCrystal_I2C lcd)
   lcd.print("Z: ");
   lcd.print(_Z);
 }
+
