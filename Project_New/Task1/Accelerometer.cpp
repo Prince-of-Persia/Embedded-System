@@ -19,9 +19,9 @@
 Accelerometer::Accelerometer()
 {
   pinMode(NTC_ENABLE, OUTPUT);
-  pinMode(ACC_Z, INPUT);
-  pinMode(ACC_Y, INPUT);
-  pinMode(ACC_X, INPUT);
+  pinMode(A4, INPUT);
+  pinMode(A5, INPUT);
+  pinMode(A6, INPUT);
 }
 
 void Accelerometer::begin()
@@ -40,7 +40,7 @@ void Accelerometer::read()
 
 void Accelerometer::readAccZ()
 {
-  _Z = analogRead(ACC_Z);
+  _Z = analogRead(A4);
   //_Z = (_Z * _vRef) / 1024;
   //_Z = (_Z * _rDiv) / (_vRef - _Z) / 1000;
   //Serial.print("Z: ");
@@ -50,7 +50,7 @@ void Accelerometer::readAccZ()
 
 void Accelerometer::readAccY()
 {
-  _Y = analogRead(ACC_Y);
+  _Y = analogRead(A5);
   //_Y = (_Y * _vRef) / 1024;
   //_Y = (_Y * _rDiv) / (_vRef - _Y) / 1000;
   //Serial.print("Y: ");
@@ -60,7 +60,7 @@ void Accelerometer::readAccY()
 
 void Accelerometer::readAccX()
 {
-  _X = analogRead(ACC_X);
+  _X = analogRead(A6);
   //_X = (_X * _vRef) / 1024;
   //_X = (_X * _rDiv) / (_vRef - _X) / 1000;
   //Serial.print("X: ");
@@ -83,6 +83,6 @@ void Accelerometer::lcdPrint(LiquidCrystal_I2C lcd)
 
 int8_t Accelerometer::getY()
 {
-  return _Y;
+  return _Z;
 }
 

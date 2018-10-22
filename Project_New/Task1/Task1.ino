@@ -13,7 +13,7 @@
 #include "LiquidCrystal_I2C.h"
 
 #define MAX_PROCESSES 4 				// Maximum number of processes
-int counter = 1;								// A counter for number of processes
+int counter = 3;								// A counter for number of processes
 
 volatile int btnFlag = LOW;
 
@@ -22,6 +22,11 @@ LiquidCrystal_I2C myLcd(16,2);	// LCD Display
 NTC_FR myNTC;										// Temp sensor
 Accelerometer myAcc;						// Accelerometer sensor 
 Servo myServo;									// Servo Thingy 
+
+int32_t cTemperature, fTemperature;						// Actual Temperature
+int32_t tempThreshold = 260;			// Temprature Threshold
+uint8_t accY = 0;
+int pos = 0;
 
 uint8_t LED[] = {LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8};
 
@@ -38,7 +43,7 @@ void setup()
 	myNTC.begin();
 	myAcc.begin();
 	myServo.attach(22);
-	//Serial.begin(9600);
+	Serial.begin(9600);
 	for (int i = 0; i < sizeof(LED); ++i)
 	{
 		pinMode(LED[i], OUTPUT);
@@ -49,12 +54,6 @@ void setup()
 
 void loop()
 {
-
-	uint32_t temperature;						// Actual Temperature
-	uint32_t tempThreshold = 200;		// Temprature Threshold
-	uint8_t accY = 0;
-	int pos = 0;
-
 	myLcd.clear();
 	if(btnFlag)
 	{
@@ -73,13 +72,18 @@ void loop()
 		break;
 		case 2:
 			myNTC.get();
-			myNTC.celsiusX10(temperature);
+			myNTC.celsiusX10(cTemperature);
 			myLcd.setCursor(0,0);
-			myLcd.print(temperature);
-			temperature=(temperature*(9/5)+32);
+			myLcd.print(cTemperature/10);
+			myLcd.print(".");
+			myLcd.print(cTemperature%10);
+			myNTC.fahrenheitX10(fTemperature);
 			myLcd.setCursor(0,1);
-			myLcd.print(temperature);
-			while(temperature > tempThreshold)
+			myLcd.print(fTemperature/10);
+			myLcd.print(".");
+			myLcd.print(fTemperature%10);
+			
+			while(cTemperature > tempThreshold)
 			{
         if(btnFlag)
         {
@@ -87,8 +91,20 @@ void loop()
           btnFlag=LOW;
           break;
 				}
+				myNTC.get();
+				myNTC.celsiusX10(cTemperature);
+				myLcd.setCursor(0,0);
+				myLcd.print(cTemperature/10);
+				myLcd.print(".");
+				myLcd.print(cTemperature%10);
+				myNTC.fahrenheitX10(fTemperature);
+				myLcd.setCursor(0,1);
+				myLcd.print(fTemperature/10);
+				myLcd.print(".");
+				myLcd.print(fTemperature%10);
 				servoSweep();
 			}	
+			
 		break;
 		case 3:
 			//Serial.println("Case 3");
@@ -97,53 +113,48 @@ void loop()
 			myAcc.read();
 			myAcc.lcdPrint(myLcd);
 			accY = myAcc.getY();
-			accY = map(accY, -300, 300, -4, 4);
+			Serial.println(accY);
+			//accY = map(accY, -300, 300, -4, 4);
 			//Serial.print("accY: ");
 			//Serial.println(accY);
-			if (accY >= 2)
+			if(accY < 50)
 			{
-				digitalWrite(LED[0], HIGH);
-				delay(50);
-				digitalWrite(LED[1], HIGH);
-				delay(50);
-				digitalWrite(LED[2], HIGH);
-				delay(50);
-				digitalWrite(LED[3], HIGH);
-				delay(50);
-				digitalWrite(LED[7], LOW);
-				delay(50);
-				digitalWrite(LED[6], LOW);
-				delay(50);
-				digitalWrite(LED[5], LOW);
-				delay(50);
-				digitalWrite(LED[4], LOW);
+				for (int i = 0; i < sizeof(LED) ; ++i)
+				{
+					digitalWrite(LED[i], HIGH);
+					delay(50);
+				}
+				for (int i = 0; i < sizeof(LED) ; ++i)
+				{
+					digitalWrite(LED[i], LOW);
+					delay(50);
+				}
 			}
-			if (accY < 2)
+			if(accY >= 50)
 			{
-				digitalWrite(LED[0], LOW);
-				delay(50);
-				digitalWrite(LED[1], LOW);
-				delay(50);
-				digitalWrite(LED[2], LOW);
-				delay(50);
-				digitalWrite(LED[3], LOW);
-				delay(50);
-				digitalWrite(LED[7], HIGH);
-				delay(50);
-				digitalWrite(LED[6], HIGH);
-				delay(50);
-				digitalWrite(LED[5], HIGH);
-				delay(50);
-				digitalWrite(LED[4], HIGH);
+				for (int i = 7; i >= 0 ; --i)
+				{
+					digitalWrite(LED[i], HIGH);
+					delay(50);
+				}
+				for (int i = 7; i >= 0 ; --i)
+				{
+					digitalWrite(LED[i], LOW);
+					delay(50);
+				}
 			}
 		break;
 		case 4:
+			for (int i = 0; i < sizeof(LED); ++i)
+			{
+				digitalWrite(LED[i], LOW);
+			}
 			//Serial.println("Case 4");
 			myLcd.setCursor(0,0);
 			myLcd.print("Case 4");
      	if(Serial.available() > 0)
      	{
-				pos = Serial.read();
+				pos = Serial.parseInt();
      	}
 			myLcd.setCursor(0,1);
 			myLcd.print(pos);
